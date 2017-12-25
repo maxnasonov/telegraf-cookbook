@@ -131,20 +131,20 @@ action :create do
         action :create
       end
 
-      windows_zipfile ENV['ProgramW6432'] do
+      windows_zipfile ENV['ProgramW6432'] || ENV['ProgramFiles'] do
         source "#{Chef::Config[:file_cache_path]}/#{file_name}"
-        not_if { ::File.exist?("#{ENV['ProgramW6432']}\\telegraf\\telegraf.exe") }
+        not_if { ::File.exist?("#{ENV['ProgramW6432'] || ENV['ProgramFiles']}\\telegraf\\telegraf.exe") }
         action :unzip
       end
 
-      directory "#{ENV['ProgramW6432']}\\telegraf\\telegraf.d" do
+      directory "#{ENV['ProgramW6432'] || ENV['ProgramFiles']}\\telegraf\\telegraf.d" do
         action :create
       end
 
       windows_package 'telegraf' do
-        source "#{ENV['ProgramW6432']}\\telegraf\\telegraf.exe"
+        source "#{ENV['ProgramW6432'] || ENV['ProgramFiles']}\\telegraf\\telegraf.exe"
         # rubocop:disable Metrics/LineLength
-        options "--service install --config-directory \"#{ENV['ProgramW6432']}\\telegraf\\telegraf.d\""
+        options "--service install --config-directory \"#{ENV['ProgramW6432'] || ENV['ProgramFiles']}\\telegraf\\telegraf.d\""
         # rubocop:enable Metrics/LineLength
         installer_type :custom
         action :install
@@ -176,13 +176,13 @@ action :delete do
       end
     else
       win_package 'telegraf' do
-        source "#{ENV['ProgramW6432']}\\telegraf\\telegraf.exe"
+        source "#{ENV['ProgramW6432'] || ENV['ProgramFiles']}\\telegraf\\telegraf.exe"
         options '--service uninstall'
         installer_type :custom
         action :remove
       end
 
-      directory "#{ENV['ProgramW6432']}\\telegraf" do
+      directory "#{ENV['ProgramW6432'] || ENV['ProgramFiles']}\\telegraf" do
         action :delete
       end
     end

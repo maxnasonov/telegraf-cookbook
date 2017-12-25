@@ -38,7 +38,7 @@ default['telegraf']['shasums'] = {
 }
 
 # rubocop:disable LineLength
-default['telegraf']['config_file_path'] = platform_family?('windows') ? "#{ENV['ProgramW6432']}\\telegraf\\telegraf.conf" : '/etc/telegraf/telegraf.conf'
+default['telegraf']['config_file_path'] = platform_family?('windows') ? "#{ENV['ProgramW6432'] || ENV['ProgramFiles']}\\telegraf\\telegraf.conf" : '/etc/telegraf/telegraf.conf'
 # rubocop:enable LineLength
 
 default['telegraf']['config'] = {
