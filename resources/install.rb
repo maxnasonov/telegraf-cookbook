@@ -75,7 +75,7 @@ action :create do
     end
 
     if node.platform_family? 'windows'
-      chocolatey_package 'telegraf' do
+      chocolatey 'telegraf' do
         version new_resource.install_version
         source node['telegraf']['chocolatey_source']
         action :install
